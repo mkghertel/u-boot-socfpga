@@ -211,7 +211,9 @@
  */
 
 /* Delay before automatically booting the default image */
+#ifndef CONFIG_BOOTDELAY
 #define CONFIG_BOOTDELAY		5
+#endif
 /* write protection for vendor parameters is completely disabled */
 #define CONFIG_ENV_OVERWRITE
 /* Enable auto completion of commands using TAB */
@@ -230,6 +232,9 @@
  */
 #ifdef CONFIG_SEMIHOSTING
 #define CONFIG_BOOTCOMMAND ""
+#elif defined(CONFIG_MMC) & defined(CONFIG_MMC_DNX_BOOT)
+#define CONFIG_BOOTCOMMAND "ext4load mmc 0:2 ${loadaddr} " \
+	"/boot/bootmmc_socdk.img;source ${loadaddr};"
 #elif defined(CONFIG_MMC)
 #define CONFIG_BOOTCOMMAND " run core_rbf_prog; run callscript; run mmcload;" \
 	"run set_initswstate; run mmcboot"

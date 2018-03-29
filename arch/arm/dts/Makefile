@@ -41,7 +41,8 @@ dtb-$(CONFIG_AM33XX) += am335x-boneblack.dtb
 dtb-$(CONFIG_SOCFPGA_ARRIA10) += socfpga_arria10.dtb \
 	socfpga_arria10_qspi.dtb \
 	socfpga_arria10_nand.dtb \
-	socfpga_arria10_qspi_reva.dtb
+	socfpga_arria10_qspi_reva.dtb \
+	socfpga_arria10_dnx.dtb
 
 targets += $(dtb-y)
 
