@@ -212,7 +212,11 @@
 
 /* Delay before automatically booting the default image */
 #ifndef CONFIG_BOOTDELAY
+#ifdef CONFIG_MMC_DNX_BOOT
+#define CONFIG_BOOTDELAY		2
+#else
 #define CONFIG_BOOTDELAY		5
+#endif
 #endif
 /* write protection for vendor parameters is completely disabled */
 #define CONFIG_ENV_OVERWRITE
@@ -232,7 +236,7 @@
  */
 #ifdef CONFIG_SEMIHOSTING
 #define CONFIG_BOOTCOMMAND ""
-#elif defined(CONFIG_MMC) & defined(CONFIG_MMC_DNX_BOOT)
+#elif defined(CONFIG_MMC) && defined(CONFIG_MMC_DNX_BOOT)
 #define CONFIG_BOOTCOMMAND "ext4load mmc 0:2 ${loadaddr} " \
 	"/boot/bootmmc_socdk.img;source ${loadaddr};"
 #elif defined(CONFIG_MMC)
@@ -263,6 +267,40 @@
 #error "MAX_DTB_SIZE_IN_RAM is too big. It will overwrite zImage in memory."
 #endif
 
+#ifdef CONFIG_MMC_DNX_BOOT
+#define CONFIG_EXTRA_ENV_SETTINGS \
+	"verify=y\0" \
+	"loadaddr=" __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
+	"fdtaddr=" __stringify(CONFIG_SYS_DTB_ADDR) "\0" \
+	"bootimage=zImage\0" \
+	"bootimagesize=0x5F0000\0" \
+	"fdtimage=" __stringify(CONFIG_LINUX_DTB_NAME) "\0" \
+	"fdtimagesize=" __stringify(MAX_DTB_SIZE_IN_RAM) "\0" \
+	"fdt_high=0x2000000\0" \
+	"bootcmd=" CONFIG_BOOTCOMMAND "\0" \
+	"u-boot_swstate_reg=0xffd0620c\0" \
+	"u-boot_image_valid=0x49535756\0" \
+	"set_initswstate=" \
+		"mw ${u-boot_swstate_reg} ${u-boot_image_valid}\0" \
+	"ksz9031-rgmii-ctrl-skew=0x70\0" \
+	"ksz9031-rgmii-rxd-skew=0x7777\0" \
+	"ksz9031-rgmii-txd-skew=0x0\0" \
+	"ksz9031-rgmii-clock-skew=0x3fc\0" \
+	"fpga=0\0" \
+	"fpgadata=0x2000000\0" \
+	"fpgadatasize=0x700000\0" \
+	"rbftosdramaddr=0x40\0" \
+	"rbfcoreimage=" RBFCOREIMAGE \
+	"cff_devsel_partition=0:1\0" \
+	CONFIG_KSZ9021_CLK_SKEW_ENV "=" \
+		__stringify(CONFIG_KSZ9021_CLK_SKEW_VAL) "\0" \
+	CONFIG_KSZ9021_DATA_SKEW_ENV "=" \
+		__stringify(CONFIG_KSZ9021_DATA_SKEW_VAL) "\0" \
+	"ethaddr=fe:c2:3d:12:ea:84\0" \
+	"sdramprio=mw 0xffd1678c 0x0;" \
+		"mw 0xffd16788 0x80000303; mw 0xffd1700c 0x0; mw 0xffd17008 0x80000000\0" \
+	"runlevel=5\0"
+#else
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	"verify=y\0" \
 	"loadaddr=" __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
@@ -345,6 +383,7 @@
 			"echo Optional boot script not found." \
 			"Continuing to boot normally;" \
 		"fi;\0"
+#endif
 
 /*
  * Environment setup
@@ -543,6 +582,10 @@
 /* Enable FAT write support */
 #define CONFIG_FAT_WRITE
 
+#ifdef CONFIG_MMC_DNX_BOOT
+#define CONFIG_CMD_EXT4
+#endif
+
 /* configure a clustsize smaller than the default 64k */
 #define CONFIG_FS_FAT_MAX_CLUSTSIZE 16384
 /* MMC support */
@@ -669,7 +712,11 @@ CONFIG_NAND_DENALI is also defined.
 
 /* Room required on the stack for the environment data */
 #ifndef CONFIG_ENV_SIZE
+#ifdef CONFIG_MMC_DNX_BOOT
+#define CONFIG_ENV_SIZE			2048
+#else
 #define CONFIG_ENV_SIZE			4096
+#endif
 #endif
 /* Size of DRAM reserved for malloc() use */
 #define CONFIG_SYS_MALLOC_LEN		(1 * 1024 * 1024)
