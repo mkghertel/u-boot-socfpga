@@ -19,6 +19,16 @@
 
 DECLARE_GLOBAL_DATA_PTR;
 
+/*DCT::TM GPIO defines*/
+#define GPIO_0_BASE 0xffc02900
+#define GPIO_1_BASE 0xffc02a00
+#define GPIO_2_BASE 0xffc02b00
+
+#define GPIO_PORTA_DR(base)  (base + 0x0)
+#define GPIO_PORTA_DDR(base) (base + 0x4)
+
+#define GPIO(pin) (1 << pin)
+
 /*
  * Initialization function which happen at early stage of c code
  */
@@ -88,6 +98,21 @@ int board_late_init(void)
 	/* if no ethaddr environment, get it from EEPROM */
 	if (!eth_getenv_enetaddr("ethaddr", enetaddr))
 		setenv_ethaddr_eeprom();
+
+	/*set GPIO 2.10 to high (release reset USB1)*/
+	setbits_le32(GPIO_PORTA_DR(GPIO_2_BASE), GPIO(10));
+	/*set GPIO 2.10 as output (release reset USB1)*/
+	setbits_le32(GPIO_PORTA_DDR(GPIO_2_BASE), GPIO(10));
+
+	/*set GPIO 2.11 to high (release reset DP)*/
+	setbits_le32(GPIO_PORTA_DR(GPIO_2_BASE), GPIO(11));
+	/*set GPIO 2.11 as output (release reset DP)*/
+	setbits_le32(GPIO_PORTA_DDR(GPIO_2_BASE), GPIO(11));
+
+	/*set GPIO 1.22 to high (release reset GEN)*/
+	setbits_le32(GPIO_PORTA_DR(GPIO_1_BASE), GPIO(22));
+	/*set GPIO 1.22 as output (release reset GEN)*/
+	setbits_le32(GPIO_PORTA_DDR(GPIO_1_BASE), GPIO(22));
 
 	return 0;
 }
