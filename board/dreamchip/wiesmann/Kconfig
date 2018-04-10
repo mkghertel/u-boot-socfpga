@@ -1,0 +1,24 @@
+if TARGET_WIESMANN
+
+config SYS_CPU
+	default "armv7"
+
+config SYS_BOARD
+	default "wiesmann"
+
+config SYS_VENDOR
+	default "dreamchip"
+
+config SYS_SOC
+	default "wiesmann"
+
+config SYS_CONFIG_NAME
+	default "wiesmann"
+
+config UBOOT_EXE_ON_FPGA
+	bool "Support socfpga_arria10_fpga"
+
+config MMC_DNX_BOOT
+	bool "Use TES D/AVE NX config"
+
+endif

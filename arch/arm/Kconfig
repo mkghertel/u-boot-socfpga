@@ -441,6 +441,9 @@ config TARGET_SOCFPGA_CYCLONE5
 config TARGET_SOCFPGA_ARRIA10
 	bool "Support socfpga_arria10"
 
+config TARGET_WIESMANN
+	bool "Support wiesmann"
+
 config TARGET_SUN4I
 	bool "Support sun4i"
 
@@ -611,6 +614,7 @@ source "board/creative/xfi3/Kconfig"
 source "board/davedenx/qong/Kconfig"
 source "board/denx/m28evk/Kconfig"
 source "board/denx/m53evk/Kconfig"
+source "board/dreamchip/wiesmann/Kconfig"
 source "board/egnite/ethernut5/Kconfig"
 source "board/embest/mx6boards/Kconfig"
 source "board/emk/top9000/Kconfig"

@@ -114,7 +114,7 @@ fiq:
 
 #else	/* !CONFIG_SPL_BUILD */
 
-#ifdef CONFIG_SOCFPGA_ARRIA10
+#if defined(CONFIG_SOCFPGA_ARRIA10) || defined(CONFIG_WIESMANN)
 .global _end_vect
 _end_vect:
 /*

@@ -44,6 +44,8 @@ dtb-$(CONFIG_SOCFPGA_ARRIA10) += socfpga_arria10.dtb \
 	socfpga_arria10_qspi_reva.dtb \
 	socfpga_arria10_dnx.dtb
 
+dtb-$(CONFIG_WIESMANN) += wiesmann_dnx.dtb
+
 targets += $(dtb-y)
 
 DTC_FLAGS += -R 4 -p 0x1000
