@@ -18,7 +18,7 @@ config SYS_CONFIG_NAME
 config UBOOT_EXE_ON_FPGA
 	bool "Support socfpga_arria10_fpga"
 
-config MMC_DNX_BOOT
+config DNX_BOOT
 	bool "Use TES D/AVE NX config"
 
 endif

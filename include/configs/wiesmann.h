@@ -24,11 +24,7 @@
  checking on FPGA image, enable it */
 #undef CONFIG_CHECK_FPGA_DATA_CRC
 
-#if	defined(CONFIG_CHECK_FPGA_DATA_CRC)
-#define RBFCOREIMAGE "ghrd_10as066n2.core.rbf.mkimage\0"
-#else
-#define RBFCOREIMAGE "ghrd_10as066n2.core.rbf\0"
-#endif
+#define RBFCOREIMAGE "socfpga_arria10_wiesmann_tes.core.rbf/0"
 /* Global data */
 #define SIZEOF_GD	(0xc0)
 
@@ -128,10 +124,10 @@
  * Console setup
  */
 /* Monitor Command Prompt */
-#define CONFIG_SYS_PROMPT		"SOCFPGA_ARRIA10 # "
+#define CONFIG_SYS_PROMPT		"ARRIA10 # "
 
 /* EMAC controller and PHY used */
-#define CONFIG_EMAC_BASE		SOCFPGA_EMAC0_ADDRESS
+#define CONFIG_EMAC_BASE		SOCFPGA_EMAC1_ADDRESS
 #define CONFIG_EPHY_PHY_ADDR		CONFIG_EPHY0_PHY_ADDR
 #define CONFIG_PHY_INTERFACE_MODE	PHY_INTERFACE_MODE_RGMII
 
@@ -212,7 +208,7 @@
 
 /* Delay before automatically booting the default image */
 #ifndef CONFIG_BOOTDELAY
-#ifdef CONFIG_MMC_DNX_BOOT
+#ifdef CONFIG_DNX_BOOT
 #define CONFIG_BOOTDELAY		2
 #else
 #define CONFIG_BOOTDELAY		5
@@ -231,29 +227,8 @@
 #define CONFIG_SYS_HUSH_PARSER
 #define CONFIG_SYS_PROMPT_HUSH_PS2	"> "
 
-/*
- * Can't poll in semihosting; so turn off automatic boot command
- */
-#ifdef CONFIG_SEMIHOSTING
-#define CONFIG_BOOTCOMMAND ""
-#elif defined(CONFIG_MMC) && defined(CONFIG_MMC_DNX_BOOT)
-#define CONFIG_BOOTCOMMAND "ext4load mmc 0:2 ${loadaddr} " \
-	"/boot/bootmmc_socdk.img;source ${loadaddr};"
-#elif defined(CONFIG_MMC)
-#define CONFIG_BOOTCOMMAND " run core_rbf_prog; run callscript; run mmcload;" \
-	"run set_initswstate; run mmcboot"
-#define CONFIG_LINUX_DTB_NAME	socfpga_arria10_socdk_sdmmc.dtb
-#elif defined(CONFIG_CADENCE_QSPI)
-#define CONFIG_BOOTCOMMAND "run qspirbfcore_rbf_prog; run qspiload;" \
-	"run set_initswstate; run qspiboot"
-#define CONFIG_LINUX_DTB_NAME	socfpga_arria10_socdk_qspi.dtb
-#elif defined(CONFIG_NAND_DENALI)
-#define CONFIG_BOOTCOMMAND "run nandrbfcore_rbf_prog; run nandload;" \
-	"run set_initswstate; run nandboot"
-#define CONFIG_LINUX_DTB_NAME	socfpga_arria10_socdk_nand.dtb
-#else
-#error "unsupported configuration"
-#endif
+#define CONFIG_BOOTCOMMAND "run bootcmd_nfs"
+#define CONFIG_LINUX_DTB_NAME socfpga_arria10_wiesmann_tes.dtb
 
 /*
  * arguments passed to the bootz command. The value of
@@ -267,7 +242,7 @@
 #error "MAX_DTB_SIZE_IN_RAM is too big. It will overwrite zImage in memory."
 #endif
 
-#ifdef CONFIG_MMC_DNX_BOOT
+#ifdef CONFIG_DNX_BOOT
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	"verify=y\0" \
 	"loadaddr=" __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
@@ -277,7 +252,10 @@
 	"fdtimage=" __stringify(CONFIG_LINUX_DTB_NAME) "\0" \
 	"fdtimagesize=" __stringify(MAX_DTB_SIZE_IN_RAM) "\0" \
 	"fdt_high=0x2000000\0" \
+	"qspibootimageaddr=0x30000\0" \
 	"bootcmd=" CONFIG_BOOTCOMMAND "\0" \
+	"bootcmd_nfs=run nfsload; run set_initswstate; run nfsboot\0" \
+	"bootcmd_mmc=run mmcload; run set_initswstate; run mmcboot\0" \
 	"u-boot_swstate_reg=0xffd0620c\0" \
 	"u-boot_image_valid=0x49535756\0" \
 	"set_initswstate=" \
@@ -291,12 +269,35 @@
 	"fpgadatasize=0x700000\0" \
 	"rbftosdramaddr=0x40\0" \
 	"rbfcoreimage=" RBFCOREIMAGE \
+	"rbfcore_rbf_prog=" \
+ 		"fpga load ${fpga} ${fpgadata} ${filesize};\0" \
 	"cff_devsel_partition=0:1\0" \
 	CONFIG_KSZ9021_CLK_SKEW_ENV "=" \
 		__stringify(CONFIG_KSZ9021_CLK_SKEW_VAL) "\0" \
 	CONFIG_KSZ9021_DATA_SKEW_ENV "=" \
 		__stringify(CONFIG_KSZ9021_DATA_SKEW_VAL) "\0" \
 	"ethaddr=fe:c2:3d:12:ea:84\0" \
+	"mmcload=" \
+		"ext2load mmc 0 ${loadaddr} /boot/${bootimage};" \
+		"ext2load mmc 0 ${fdtaddr} /boot/${fdtimage};" \
+		"ext2load mmc 0 ${fpgadata} /boot/${rbfcoreimage};" \
+		"run rbfcore_rbf_prog\0" \
+	"mmcboot=setenv bootargs " CONFIG_BOOTARGS \
+		" debug ignore_loglevel earlyprintk=ttyS0,"  __stringify(CONFIG_BAUDRATE) \
+		" break=y ip=dhcp root=/dev/mmcblk0p1 rw rootwait;" \
+		"fpgabr 1;" \
+		"run sdramprio;" \
+		"bootz ${loadaddr} - ${fdtaddr}\0" \
+	"nfsload=dhcp;" \
+		"tftp ${fdtaddr} ${fdtimage};" \
+		"tftp ${fpgadata} ${rbfcoreimage};" \
+		"run rbfcore_rbf_prog\0" \
+	"nfsboot=setenv bootargs " CONFIG_BOOTARGS \
+		" debug ignore_loglevel earlyprintk=ttyS0,"  __stringify(CONFIG_BAUDRATE) \
+		" break=y ip=dhcp root=/dev/nfs nfs nfsroot=${rootpath} rw;" \
+		"fpgabr 1;" \
+		"run sdramprio;" \
+		"bootz ${loadaddr} - ${fdtaddr}\0" \
 	"sdramprio=mw 0xffd1678c 0x0;" \
 		"mw 0xffd16788 0x80000303; mw 0xffd1700c 0x0; mw 0xffd17008 0x80000000\0" \
 	"runlevel=5\0"
@@ -414,11 +415,8 @@
 
 /* Boot Argument Buffer Size */
 #define CONFIG_SYS_BARGSIZE		CONFIG_SYS_CBSIZE
-
-#ifndef CONFIG_SEMIHOSTING
 /* Enable pre-console buffer */
 #define CONFIG_PRE_CONSOLE_BUFFER
-#endif
 
 /* Size of pre-console buffer (in bytes) */
 #define CONFIG_PRE_CON_BUF_SZ 256
@@ -556,9 +554,8 @@
 #define CONFIG_DW_AUTONEG
 #define CONFIG_PHYLIB
 #define CONFIG_PHY_MICREL
-
 /* phy */
-#define CONFIG_EPHY0_PHY_ADDR		7
+#define CONFIG_EPHY0_PHY_ADDR		0
 #endif	/* CONFIG_DESIGNWARE_ETH */
 
 /* these are in devault environment so they must be always defined */
@@ -573,16 +570,20 @@
 
 #ifdef CONFIG_MMC
 
+#ifndef CONFIG_CADENCE_QSPI
 #define CONFIG_ENV_IS_IN_MMC
 #define CONFIG_SYS_MMC_ENV_DEV		0/* device 0 */
 #define CONFIG_ENV_OFFSET		512/* just after the MBR */
+#define CONFIG_BOOT_FLASH_TYPE "mmc"
+#endif
 
 #define CONFIG_CMD_FAT
 #define CONFIG_CMD_MMC
 /* Enable FAT write support */
 #define CONFIG_FAT_WRITE
 
-#ifdef CONFIG_MMC_DNX_BOOT
+#ifdef CONFIG_DNX_BOOT
+#define CONFIG_CMD_EXT2
 #define CONFIG_CMD_EXT4
 #endif
 
@@ -600,9 +601,8 @@
 /* using smaller max blk cnt to avoid flooding the limited stack we have */
 #define CONFIG_SOCFPGA_DWMMC_BUS_HZ	CONFIG_HPS_CLK_SDMMC_HZ
 #define CONFIG_SOCFPGA_DWMMC_BUS_WIDTH	4
-/* requird for dw_mmc driver */
+/* required for dw_mmc driver */
 #define CONFIG_BOUNCE_BUFFER
-#define CONFIG_BOOT_FLASH_TYPE "mmc"
 #endif	/* CONFIG_MMC */
 
 /*
@@ -613,7 +613,7 @@
 #ifdef CONFIG_CADENCE_QSPI
 /* Enable it if you want to use dual-stacked mode */
 #undef CONFIG_SF_DUAL_FLASH
-#define CONFIG_QSPI_RBF_ADDR 		0x720000
+#define CONFIG_QSPI_RBF_ADDR 		0x30000
 #define CONFIG_SPI_FLASH		/* SPI flash subsystem */
 #define CONFIG_SPI_FLASH_STMICRO	/* Micron/Numonyx flash */
 #define CONFIG_SPI_FLASH_SPANSION	/* Spansion flash */
@@ -637,7 +637,7 @@
 #define CONFIG_CQSPI_TSLCH_NS		(20)
 #define CONFIG_CQSPI_DECODER		(0)
 #define CONFIG_ENV_IS_IN_SPI_FLASH
-#define CONFIG_ENV_OFFSET		0x710000
+#define CONFIG_ENV_OFFSET		0x90000
 #define CONFIG_ENV_SIZE			(4 * 1024)
 #define CONFIG_ENV_SECT_SIZE		(4 * 1024)
 #define CONFIG_BOOT_FLASH_TYPE "qspi"
@@ -712,7 +712,7 @@ CONFIG_NAND_DENALI is also defined.
 
 /* Room required on the stack for the environment data */
 #ifndef CONFIG_ENV_SIZE
-#ifdef CONFIG_MMC_DNX_BOOT
+#ifdef CONFIG_DNX_BOOT
 #define CONFIG_ENV_SIZE			2048
 #else
 #define CONFIG_ENV_SIZE			4096

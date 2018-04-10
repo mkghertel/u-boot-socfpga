@@ -928,7 +928,7 @@ int dram_init(void)
 		mmc_initialize(gd->bd);
 #endif
 	} else {
-#if defined(CONFIG_MMC)
+#if defined(CONFIG_MMC) && !defined(CONFIG_CADENCE_QSPI)
 		rval = cff_from_sdmmc_env();
 #elif defined(CONFIG_CADENCE_QSPI)
 		rval = cff_from_qspi_env();

@@ -281,7 +281,8 @@ void reset_deassert_dedicated_peripherals(void)
 	u32 mask = 0;
 #if defined(CONFIG_MMC)
 	mask |= ALT_RSTMGR_PER0MODRST_SDMMCECC_SET_MSK;
-#elif defined(CONFIG_CADENCE_QSPI)
+#endif
+#if defined(CONFIG_CADENCE_QSPI)
 	mask |= ALT_RSTMGR_PER0MODRST_QSPIECC_SET_MSK;
 #elif defined(CONFIG_NAND_DENALI)
 	mask |= ALT_RSTMGR_PER0MODRST_NANDECC_SET_MSK;
@@ -296,7 +297,8 @@ void reset_deassert_dedicated_peripherals(void)
 	mask = 0;
 #if defined(CONFIG_MMC)
 	mask |= ALT_RSTMGR_PER0MODRST_SDMMC_SET_MSK;
-#elif defined(CONFIG_CADENCE_QSPI)
+#endif
+#if defined(CONFIG_CADENCE_QSPI)
 	mask |= ALT_RSTMGR_PER0MODRST_QSPI_SET_MSK;
 #elif defined(CONFIG_NAND_DENALI)
 	mask |= ALT_RSTMGR_PER0MODRST_NAND_SET_MSK;

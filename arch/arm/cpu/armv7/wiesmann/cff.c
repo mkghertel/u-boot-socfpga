@@ -41,7 +41,7 @@ static int cff_flash_probe(struct cff_flash_info *cff_flashinfo)
 		return -1;
 	}
 #endif
-#ifdef CONFIG_MMC
+#if defined(CONFIG_MMC) && !defined(CONFIG_CADENCE_QSPI)
 	/* we are looking at the FAT partition */
 	if (fs_set_blk_dev("mmc", cff_flashinfo->sdmmc_flashinfo.dev_part,
 		FS_TYPE_FAT)) {
@@ -77,7 +77,7 @@ static int flash_read(struct cff_flash_info *cff_flashinfo,
 		size_read,
 		buffer_ptr);
 #endif
-#ifdef CONFIG_MMC
+#if defined(CONFIG_MMC) && !defined(CONFIG_CADENCE_QSPI)
 	bytesread = file_fat_read_at(cff_flashinfo->sdmmc_flashinfo.filename,
 			cff_flashinfo->flash_offset, buffer_ptr, size_read);
 
@@ -118,7 +118,7 @@ static const struct socfpga_system_manager *system_manager_base =
 		(void *)SOCFPGA_SYSMGR_ADDRESS;
 #endif
 
-#ifdef CONFIG_MMC
+#if defined(CONFIG_MMC) && !defined(CONFIG_CADENCE_QSPI)
 const char *get_cff_filename(const void *fdt, int *len)
 {
 	const char *cff_filename = NULL;
