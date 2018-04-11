@@ -24,7 +24,7 @@
  checking on FPGA image, enable it */
 #undef CONFIG_CHECK_FPGA_DATA_CRC
 
-#define RBFCOREIMAGE "socfpga_arria10_wiesmann_tes.core.rbf/0"
+#define RBFCOREIMAGE "socfpga_arria10_wiesmann_tes.core.rbf\0"
 /* Global data */
 #define SIZEOF_GD	(0xc0)
 
@@ -689,6 +689,7 @@ CONFIG_NAND_DENALI is also defined.
 #define CONFIG_FPGA_COUNT		(1)
 /* Enable FPGA command at console */
 #define CONFIG_CMD_FPGA
+#define CONFIG_CMD_FPGA_LOAD
 #define CONFIG_CMD_FPGA_LOADFS
 #endif /* CONFIG_FPGA */
 
