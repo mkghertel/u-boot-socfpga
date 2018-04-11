@@ -570,7 +570,14 @@ int fpgamgr_program_poll_usermode(void)
  */
 int socfpga_load(Altera_desc *desc, const void *rbf_data, size_t rbf_size)
 {
+	int programming_core = 0;
 	unsigned long status;
+
+	if(is_fpgamgr_early_user_mode() && !is_fpgamgr_user_mode()) {
+		printf("FPGA is in Early release mode. " \
+			"Programming core only...\n");
+		programming_core = 1;
+	}
 
 	/* disable all signals from hps peripheral controller to fpga */
 	writel(0, &system_manager_base->fpgaintf_en_global);
@@ -578,14 +585,26 @@ int socfpga_load(Altera_desc *desc, const void *rbf_data, size_t rbf_size)
 	/* disable all axi bridge (hps2fpga, lwhps2fpga & fpga2hps) */
 	reset_assert_all_bridges();
 
-	/* Initialize the FPGA Manager */
-	status = fpgamgr_program_init((u32 *)rbf_data, rbf_size);
-	if (status)
-		return status;
+	if(!programming_core) {
+		/* Initialize the FPGA Manager */
+		status = fpgamgr_program_init((u32 *)rbf_data, rbf_size);
+		if (status)
+			return status;
+	}
+	else {
+		reset_assert_fpga_connected_peripherals();
+	}
 
 	/* Write the RBF data to FPGA Manager */
 	fpgamgr_program_write(rbf_data, rbf_size);
 
-	return fpgamgr_program_fini();
+	status = fpgamgr_program_fini();
+
+	if(!status && programming_core) {
+		config_pins(gd->fdt_blob, "fpga");
+		reset_deassert_fpga_connected_peripherals();
+	}
+
+	return status;
 }
 #endif /* CONFIG_CMD_FPGA_LOAD */
