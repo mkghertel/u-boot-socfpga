@@ -9,7 +9,7 @@
 / {
 	#address-cells = <1>;
 	#size-cells = <1>;
-	model = "SOCFPGA Arria10 Dev Kit";	/* Bootloader setting: uboot.model */
+	model = "Wiesmann (Arria10 SoM) v1.1";	/* Bootloader setting: uboot.model */
 
 	chosen {
 		cff-offset = <0x00030000>;	/* Bootloader setting: uboot.rbf_offset */
