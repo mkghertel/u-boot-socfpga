@@ -278,3 +278,19 @@ int board_eth_init(bd_t *bis)
 }
 #endif
 
+#ifdef CONFIG_OF_BOARD_SETUP
+void ft_board_setup(void *blob, bd_t *bd)
+{
+       uint8_t enetaddr[6];
+
+       /* MAC addr */
+       if (eth_getenv_enetaddr("ethaddr", enetaddr)) {
+               int ret = 0;
+               ret = fdt_find_and_setprop(blob, "ethernet1", "local-mac-address",
+                                    enetaddr, 6, 1);
+               if(ret)
+                       error("Could not set Ethernet MAC in device tree\n");
+       }
+}
+#endif
+

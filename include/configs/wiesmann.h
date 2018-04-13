@@ -99,7 +99,7 @@
 #define CONFIG_SYS_INIT_SP_ADDR		(CONFIG_SYS_INIT_RAM_ADDR + \
 					 CONFIG_SYS_INIT_RAM_SIZE  - SIZEOF_MMUPAGETABLE)
 /* Default load address */
-#define CONFIG_SYS_LOAD_ADDR		0x8000
+#define CONFIG_SYS_LOAD_ADDR		0x10000
 
 /*
  * Display CPU and Board Info
@@ -113,12 +113,11 @@
  */
 /* flat device tree */
 #define CONFIG_OF_LIBFDT
+#define CONFIG_OF_BOARD_SETUP /*we need this to set the mac for linux via dt*/
 /* skip updating the FDT blob */
 #define CONFIG_FDT_BLOB_SKIP_UPDATE
 /* Initial Memory map size for Linux, minus 4k alignment for DFT blob */
 #define CONFIG_SYS_BOOTMAPSZ		(32 * 1024 * 1024)
-
-
 
 /*
  * Console setup
@@ -227,8 +226,9 @@
 #define CONFIG_SYS_HUSH_PARSER
 #define CONFIG_SYS_PROMPT_HUSH_PS2	"> "
 
-#define CONFIG_BOOTCOMMAND "run bootcmd_nfs"
+#define CONFIG_BOOTCOMMAND "dhcp;source ${loadaddr};ext4load mmc 0 ${loadaddr} /boot/bootmmc.img;source ${loadaddr};"
 #define CONFIG_LINUX_DTB_NAME socfpga_arria10_wiesmann_tes.dtb
+
 
 /*
  * arguments passed to the bootz command. The value of
@@ -249,10 +249,17 @@
 	"fdtaddr=" __stringify(CONFIG_SYS_DTB_ADDR) "\0" \
 	"bootimage=zImage\0" \
 	"bootimagesize=0x5F0000\0" \
+	"ethaddr=fe:c2:3d:12:ea:84\0" \
 	"fdtimage=" __stringify(CONFIG_LINUX_DTB_NAME) "\0" \
 	"fdtimagesize=" __stringify(MAX_DTB_SIZE_IN_RAM) "\0" \
 	"fdt_high=0x2000000\0" \
+	"qspi_upage_cs=2\0" \
+	"qspiloadcs=0\0" \
 	"qspibootimageaddr=0x30000\0" \
+	"qspifdtaddr=0x100000\0" \
+	"qspirbfaddr=" __stringify(CONFIG_QSPI_RBF_ADDR) "\0" \
+	"qspiroot=/dev/mtdblock1\0" \
+	"qspirootfstype=jffs2\0" \
 	"bootcmd=" CONFIG_BOOTCOMMAND "\0" \
 	"bootcmd_nfs=run nfsload; run set_initswstate; run nfsboot\0" \
 	"bootcmd_mmc=run mmcload; run set_initswstate; run mmcboot\0" \
@@ -276,7 +283,6 @@
 		__stringify(CONFIG_KSZ9021_CLK_SKEW_VAL) "\0" \
 	CONFIG_KSZ9021_DATA_SKEW_ENV "=" \
 		__stringify(CONFIG_KSZ9021_DATA_SKEW_VAL) "\0" \
-	"ethaddr=fe:c2:3d:12:ea:84\0" \
 	"mmcload=" \
 		"ext2load mmc 0 ${loadaddr} /boot/${bootimage};" \
 		"ext2load mmc 0 ${fdtaddr} /boot/${fdtimage};" \
