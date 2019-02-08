@@ -22,7 +22,8 @@
 	aliases {
 		ethernet0 = &gmac0;
 		spi0 = &qspi;
-		i2c0 = &i2c;
+		i2c0 = &i2c1;
+		i2c1 = &i2c0;
 		spi1 = &spim0;
 		spi2 = &spim1;
 	};
@@ -152,7 +153,17 @@
 			};
 		};
 
-		i2c: i2c@ffc02900 {
+		i2c0: i2c@ffc02800 {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			compatible = "snps,designware-i2c";
+			reg = <0x0 0xffc02800 0x100>;
+			interrupts = <0 103 0x4>;
+			status = "okay";
+		};
+
+
+		i2c1: i2c@ffc02900 {
 			#address-cells = <1>;
 			#size-cells = <0>;
 			compatible = "snps,designware-i2c";

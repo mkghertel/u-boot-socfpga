@@ -183,7 +183,8 @@ void board_init_f(ulong dummy)
 	clrbits_le32(CCU_IOM_MPRT_ADMASK_MEM_RAM0_ADDR,
 		     CCU_ADMASK_P_MASK | CCU_ADMASK_NS_MASK);
 
-	/* enable i2c1 */
+	/* enable i2c0 and i2c1 */
+	socfpga_per_reset(SOCFPGA_RESET(I2C0), 0);
 	socfpga_per_reset(SOCFPGA_RESET(I2C1), 0);
 
 	/* Take GPIO0 & GPIO1 out of reset */
