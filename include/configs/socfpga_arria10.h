@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2014-2017 Intel Corporation <www.intel.com>
+ *  Copyright (C) 2014-2018 Intel Corporation <www.intel.com>
  *
  * SPDX-License-Identifier:	GPL-2.0
  */
@@ -52,6 +52,11 @@
 #define CONFIG_MISC_INIT_R
 /* Enable board late init for ECC setup if IRQ enabled */
 #define CONFIG_BOARD_LATE_INIT
+
+/*
+ * Errata configuration
+ */
+#define CONFIG_ARM_ERRATA_845369
 
 /* Cache options */
 #define CONFIG_SYS_DCACHE_OFF
@@ -691,6 +696,12 @@ CONFIG_NAND_DENALI is also defined.
 #define CONFIG_CMD_FPGA
 #define CONFIG_CMD_FPGA_LOADFS
 #endif /* CONFIG_FPGA */
+
+/*
+ * FPGA MANAGER HPS JTAG support
+ * Enable it if reading JTAG ID code is required
+ */
+#undef CONFIG_FPGAMGR_HPS_JTAG
 
 /*
  * Memory allocation (MALLOC)
