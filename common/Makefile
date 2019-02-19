@@ -267,4 +267,9 @@ obj-y += aboot.o
 obj-y += fb_mmc.o
 endif
 
+#DCT::TM this is needed until i2c bus is on FPGA IO pin
+ifdef CONFIG_AT24MAC
+obj-y += cmd_at24mac.o
+endif
+
 CFLAGS_env_embedded.o := -Wa,--no-warn -DENV_CRC=$(shell tools/envcrc 2>/dev/null)

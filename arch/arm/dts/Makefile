@@ -42,6 +42,8 @@ dtb-$(CONFIG_SOCFPGA_ARRIA10) += socfpga_arria10.dtb \
 	socfpga_arria10_qspi.dtb \
 	socfpga_arria10_nand.dtb \
 	socfpga_arria10_qspi_reva.dtb \
+	dreamchip_arria10som_qspi.dtb \
+	dreamchip_arria10som_sdmmc.dtb \
 	socfpga_arria10_dnx.dtb
 
 dtb-$(CONFIG_WIESMANN) += wiesmann_dnx.dtb

@@ -294,6 +294,9 @@ config TARGET_PCM051
 config TARGET_DRACO
 	bool "Support draco"
 
+config TARGET_DREAMCHIP_ARRIA10SOM
+	bool "Support dreamchip_arria10som"
+
 config TARGET_DXR2
 	bool "Support dxr2"
 
@@ -614,6 +617,7 @@ source "board/creative/xfi3/Kconfig"
 source "board/davedenx/qong/Kconfig"
 source "board/denx/m28evk/Kconfig"
 source "board/denx/m53evk/Kconfig"
+source "board/dreamchip/arria10som/Kconfig"
 source "board/dreamchip/wiesmann/Kconfig"
 source "board/egnite/ethernut5/Kconfig"
 source "board/embest/mx6boards/Kconfig"
