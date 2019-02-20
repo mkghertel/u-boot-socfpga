@@ -12,7 +12,7 @@
 	model = "Dreamchip Arria10 SoM";	/* Bootloader setting: uboot.model */
 
 	chosen {
-		cff-file = "dreamchip_arria10som_tes.periph.rbf";	/* Bootloader setting: uboot.rbf_filename */
+		cff-file = "dreamchip_arria10som_tes.periph.rbf.img";	/* Bootloader setting: uboot.rbf_filename */
 		early-release-fpga-config;
 	};
 
