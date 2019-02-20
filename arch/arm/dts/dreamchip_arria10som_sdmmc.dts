@@ -12,8 +12,8 @@
 	model = "Dreamchip Arria10 SoM";	/* Bootloader setting: uboot.model */
 
 	chosen {
-		//cff-file = "ghrd_10AS048E4.periph.rbf";	/* Bootloader setting: uboot.rbf_filename */
-		cff-file = "dreamchip_arria10som.rbf";		/* Bootloader setting: uboot.rbf_filename */
+		cff-file = "dreamchip_arria10som_tes.periph.rbf";	/* Bootloader setting: uboot.rbf_filename */
+		early-release-fpga-config;
 	};
 
 	/* Clock sources */

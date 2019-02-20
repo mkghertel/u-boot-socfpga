@@ -28,9 +28,9 @@
 #undef CONFIG_CHECK_FPGA_DATA_CRC
 
 #if	defined(CONFIG_CHECK_FPGA_DATA_CRC)
-#define RBFCOREIMAGE "ghrd_10AS048E4.core.rbf.mkimage\0"
+#define RBFCOREIMAGE "dreamchip_arria10som_tes.core.rbf.mkimage\0"
 #else
-#define RBFCOREIMAGE "ghrd_10AS048E4.core.rbf\0"
+#define RBFCOREIMAGE "dreamchip_arria10som_tes.core.rbf\0"
 #endif
 /* Global data */
 #define SIZEOF_GD	(0xc0)
@@ -241,7 +241,7 @@
 #define CONFIG_BOOTCOMMAND ""
 #elif defined(CONFIG_MMC) && !defined(CONFIG_CADENCE_QSPI) && defined(CONFIG_AT24MAC)/*DCT::TM*/
 #define CONFIG_BOOTCOMMAND "ext4load mmc 0:2 ${loadaddr} " \
-	"/boot/bootmmc_socdk.img;source ${loadaddr};"
+	"/boot/bootmmc_arria10som.img;source ${loadaddr};"
 #define CONFIG_LINUX_DTB_NAME	dreamchip_arria10som_sdmmc.dtb
 #define CONFIG_MMC_BOOTPART "2"
 #define CONFIG_MMC_LINUXROOT "/dev/mmcblk0p2"
