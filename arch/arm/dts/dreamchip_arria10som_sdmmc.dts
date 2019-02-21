@@ -299,7 +299,7 @@
 
 	hps_fpgabridge0: fpgabridge@0 {
 		compatible = "altr,socfpga-hps2fpga-bridge";
-		init-val = <0>;
+		init-val = <1>;
 	};
 
 	hps_fpgabridge1: fpgabridge@1 {
