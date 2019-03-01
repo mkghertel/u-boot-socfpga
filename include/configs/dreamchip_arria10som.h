@@ -307,7 +307,6 @@
 		__stringify(CONFIG_KSZ9021_CLK_SKEW_VAL) "\0" \
 	CONFIG_KSZ9021_DATA_SKEW_ENV "=" \
 		__stringify(CONFIG_KSZ9021_DATA_SKEW_VAL) "\0" \
-	"ethaddr=fe:c2:3d:12:ea:84\0" \
 	"sdramprio=mw 0xffd1678c 0x0;" \
 		"mw 0xffd16788 0x80000303; mw 0xffd1700c 0x0; mw 0xffd17008 0x80000000\0" \
 	"runlevel=5\0"
