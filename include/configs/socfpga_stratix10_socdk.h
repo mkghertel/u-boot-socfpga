@@ -117,9 +117,19 @@ unsigned int cm_get_qspi_controller_clk_hz(void);
  * Do note the value will overide also the chosen node in FDT blob.
  */
 #define CONFIG_BOOTARGS "earlycon"
+#ifdef CONFIG_MMC_DNX_BOOT
+#define CONFIG_BOOTCOMMAND "ext4load mmc 0:2 ${loadaddr} " \
+        "/boot/bootmmc_socdk.img;source ${loadaddr};" 
+#else
 #define CONFIG_BOOTCOMMAND "run fatscript; run mmcload;run linux_qspi_enable;" \
 			   "rsu dtb; run mmcboot"
+#endif
 
+#ifdef CONFIG_MMC_DNX_BOOT
+#define CONFIG_EXTRA_ENV_SETTINGS \
+	"loadaddr=" __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
+	"ethaddr=ae:8e:b8:a8:5c:43\0"
+#else
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	"loadaddr=" __stringify(CONFIG_SYS_LOAD_ADDR) "\0" \
 	"bootfile=Image\0" \
@@ -142,6 +152,9 @@ unsigned int cm_get_qspi_controller_clk_hz(void);
 	"scriptfile=u-boot.scr\0" \
 	"fatscript=if fatload mmc 0:1 ${scriptaddr} ${scriptfile};" \
 		   "then source ${scriptaddr}; fi\0"
+
+
+#endif
 
 /*
  * Generic Interrupt Controller Definitions

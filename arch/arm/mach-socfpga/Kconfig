@@ -200,4 +200,12 @@ config SYS_CONFIG_NAME
 	default "socfpga_stratix10_socdk" if TARGET_SOCFPGA_STRATIX10_SOCDK
 	default "socfpga_vining_fpga" if TARGET_SOCFPGA_SAMTEC_VINING_FPGA
 
+
+endif
+
+if TARGET_SOCFPGA_STRATIX10
+
+config MMC_DNX_BOOT
+	bool "Use TES D/AVE NX config"
+
 endif
