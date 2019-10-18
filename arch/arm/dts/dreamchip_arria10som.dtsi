@@ -44,7 +44,7 @@
 	};
 };
 
-&gmac0 {
+&gmac1 {
 	phy-mode = "rgmii";
 	phy-addr = <0xffffffff>; /* probe for phy addr */
 
@@ -64,10 +64,10 @@
 	rxd1-skew-ps = <420>; /* 0ps */
 	rxd2-skew-ps = <420>; /* 0ps */
 	rxd3-skew-ps = <420>; /* 0ps */
-	txen-skew-ps = <0>; /* -420ps */
-	txc-skew-ps = <1860>; /* 960ps */
+	txen-skew-ps = <420>; /* 0ps */
+	txc-skew-ps = <1800>; /* 900ps */
 	rxdv-skew-ps = <420>; /* 0ps */
-	rxc-skew-ps = <1680>; /* 780ps */
+	rxc-skew-ps = <900>; /* 0ps */
 	max-frame-size = <3800>;
 	status = "okay";
 };
