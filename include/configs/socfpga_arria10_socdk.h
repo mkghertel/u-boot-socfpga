@@ -75,6 +75,8 @@
 
 #endif
 
+#define CONFIG_SPL_FS_LOAD_PAYLOAD_NAME         "u-boot.img-arria10-socdk"
+
 /* The rest of the configuration is shared */
 #include <configs/socfpga_common.h>
 
