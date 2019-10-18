@@ -75,6 +75,8 @@
 
 #endif
 
+#define CONFIG_SPL_FS_LOAD_PAYLOAD_NAME         "u-boot.img-dreamchip-arria10som"
+
 /* The rest of the configuration is shared */
 #include <configs/socfpga_common.h>
 
