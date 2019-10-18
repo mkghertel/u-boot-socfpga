@@ -3,8 +3,8 @@
  *  Copyright (C) 2015-2019 Altera Corporation <www.altera.com>
  */
 
-#ifndef __CONFIG_SOCFGPA_ARRIA10_H__
-#define __CONFIG_SOCFGPA_ARRIA10_H__
+#ifndef __CONFIG_DREAMCHIP_ARRIA10SOM_H__
+#define __CONFIG_DREAMCHIP_ARRIA10SOM_H__
 
 #include <asm/arch/base_addr_a10.h>
 
@@ -19,7 +19,7 @@
  */
 
 /* Memory configurations  */
-#define PHYS_SDRAM_1_SIZE		0x2000000
+#define PHYS_SDRAM_1_SIZE		0x40000000
 
 /* Ethernet on SoC (EMAC) */
 
@@ -90,4 +90,4 @@
 #undef CONFIG_BOOTCOMMAND
 #define CONFIG_BOOTCOMMAND "run qspiload; run qspiboot"
 #endif
-#endif	/* __CONFIG_SOCFGPA_ARRIA10_H__ */
+#endif	/* __CONFIG_DREAMCHIP_ARRIA10SOM_H__ */

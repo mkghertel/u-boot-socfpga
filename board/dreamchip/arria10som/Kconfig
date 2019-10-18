@@ -15,7 +15,4 @@ config SYS_SOC
 config SYS_CONFIG_NAME
 	default "dreamchip_arria10som"
 
-config UBOOT_EXE_ON_FPGA
-	bool "Support socfpga_arria10_fpga"
-
 endif
