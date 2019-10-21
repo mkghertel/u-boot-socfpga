@@ -22,6 +22,8 @@
 #define PHYS_SDRAM_1_SIZE		0x40000000
 
 /* Ethernet on SoC (EMAC) */
+//#define CONFIG_ID_EEPROM
+#define CONFIG_SYS_I2C_MAC_OFFSET       0xa9
 
 /*
  * U-Boot environment configurations
@@ -50,9 +52,6 @@
 #define CONFIG_BOOTCOMMAND \
 	"ext4load mmc 0:2 0x8000 /boot/bootmmc_arria10som.img;" \
 	"source 0x8000"
-
-#define CONFIG_EXTRA_ENV_SETTINGS \
-	"ethaddr=fe:c2:3d:12:ea:84\0"
 
 #if defined(CONFIG_QSPI_BOOT)
 #define CONFIG_EXTRA_ENV_SETTINGS \

@@ -113,20 +113,10 @@
 	i2c-sda-falling-time-ns = <6000>;
 	i2c-scl-falling-time-ns = <6000>;
 
-	eeprom@51 {
+	eeprom@59 {
 		compatible = "atmel,24c32";
-		reg = <0x51>;
+		reg = <0x59>;
 		pagesize = <32>;
-	};
-
-	rtc@68 {
-		compatible = "dallas,ds1339";
-		reg = <0x68>;
-	};
-
-	ltc@5c {
-		compatible = "ltc2977";
-		reg = <0x5c>;
 	};
 };
 
