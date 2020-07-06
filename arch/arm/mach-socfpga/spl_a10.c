@@ -82,6 +82,7 @@ void spl_board_init(void)
 	arch_early_init_r();
 
 	/* If the full FPGA is already loaded, ie.from EPCQ, config fpga pins */
+#if !defined(CONFIG_SPL_FPGA_ALWAYS_CONFIG)
 	if (is_fpgamgr_user_mode()) {
 		int ret = config_pins(gd->fdt_blob, "shared");
 
@@ -91,7 +92,9 @@ void spl_board_init(void)
 		ret = config_pins(gd->fdt_blob, "fpga");
 		if (ret)
 			return;
-	} else if (!is_fpgamgr_early_user_mode()) {
+	} else if (!is_fpgamgr_early_user_mode())
+#endif
+	{
 		/* Program IOSSM(early IO release) or full FPGA */
 		fpgamgr_program(buf, FPGA_BUFSIZ, 0);
 	}
