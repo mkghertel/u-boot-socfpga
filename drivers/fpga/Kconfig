@@ -85,4 +85,11 @@ config FPGA_ZYNQPL
 	  Enable FPGA driver for loading bitstream in BIT and BIN format
 	  on Xilinx Zynq devices.
 
+config SPL_FPGA_ALWAYS_CONFIG
+        bool "Always reconfigure FPGA after reboot in SPL"
+        depends on FPGA_SOCFPGA
+        help
+          Do not check if FPGA is already in user mode. Reconfigure
+	  FPGA after every reboot.
+
 endmenu
