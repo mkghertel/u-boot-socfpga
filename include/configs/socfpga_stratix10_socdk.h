@@ -107,7 +107,10 @@ unsigned int cm_get_qspi_controller_clk_hz(void);
 #define CONFIG_BOOTARGS "earlycon panic=-1"
 #endif
 
-#ifdef CONFIG_QSPI_BOOT
+#ifdef CONFIG_MMC_DNX_BOOT
+#define CONFIG_BOOTCOMMAND "ext4load mmc 0:2 ${loadaddr} " \
+	"/boot/bootmmc_socdk.img;source ${loadaddr};" 
+#elif defined(CONFIG_QSPI_BOOT)
 #define CONFIG_BOOTCOMMAND "sf probe; run qspiload;run linux_qspi_enable;" \
 			   "rsu dtb; run qspiboot"
 #else
