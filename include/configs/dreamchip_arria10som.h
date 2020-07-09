@@ -51,9 +51,6 @@
 	"ext4load mmc 0:2 0x8000 /boot/bootmmc_arria10som.img;" \
 	"source 0x8000"
 
-#define CONFIG_EXTRA_ENV_SETTINGS \
-	"ethaddr=fe:c2:3d:12:ea:84\0"
-
 #if defined(CONFIG_QSPI_BOOT)
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	"fdtfile=" CONFIG_DEFAULT_FDT_FILE "\0" \

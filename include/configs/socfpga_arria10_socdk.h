@@ -41,7 +41,11 @@
 /* SPL memory allocation configuration, this is for FAT implementation */
 #define CONFIG_SYS_SPL_MALLOC_SIZE	0x00015000
 
-#if defined(CONFIG_QSPI_BOOT) || defined(CONFIG_NAND_BOOT)
+#define CONFIG_BOOTCOMMAND \
+	"ext4load mmc 0:2 0x8000 /boot/bootmmc_socdk.img;" \
+	"source 0x8000"
+
+#if defined(CONFIG_QSPI_BOOT)
 #define CONFIG_EXTRA_ENV_SETTINGS \
 	"fdtfile=" CONFIG_DEFAULT_FDT_FILE "\0" \
 	"bootm_size=0xa000000\0" \
