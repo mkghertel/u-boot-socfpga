@@ -163,6 +163,10 @@ config TARGET_SOCFPGA_TERASIC_DE0_NANO
 	bool "Terasic DE0-Nano-Atlas (Cyclone V)"
 	select TARGET_SOCFPGA_CYCLONE5
 
+config TARGET_SOCFPGA_TERASIC_DE0_NANO_HDMI
+	bool "Terasic DE0-Nano-Atlas HDMI (Cyclone V)"
+	select TARGET_SOCFPGA_CYCLONE5
+
 config TARGET_SOCFPGA_TERASIC_DE10_NANO
 	bool "Terasic DE10-Nano (Cyclone V)"
 	select TARGET_SOCFPGA_CYCLONE5
@@ -184,6 +188,7 @@ config SYS_BOARD
 	default "cyclone5-socdk" if TARGET_SOCFPGA_CYCLONE5_SOCDK
 	default "dbm-soc1" if TARGET_SOCFPGA_DEVBOARDS_DBM_SOC1
 	default "de0-nano-soc" if TARGET_SOCFPGA_TERASIC_DE0_NANO
+	default "de0-nano-soc-hdmi" if TARGET_SOCFPGA_TERASIC_DE0_NANO_HDMI
 	default "de1-soc" if TARGET_SOCFPGA_TERASIC_DE1_SOC
 	default "de10-nano" if TARGET_SOCFPGA_TERASIC_DE10_NANO
 	default "is1" if TARGET_SOCFPGA_IS1
@@ -206,6 +211,7 @@ config SYS_VENDOR
 	default "ebv" if TARGET_SOCFPGA_EBV_SOCRATES
 	default "samtec" if TARGET_SOCFPGA_SAMTEC_VINING_FPGA
 	default "terasic" if TARGET_SOCFPGA_TERASIC_DE0_NANO
+	default "terasic" if TARGET_SOCFPGA_TERASIC_DE0_NANO_HDMI
 	default "terasic" if TARGET_SOCFPGA_TERASIC_DE1_SOC
 	default "terasic" if TARGET_SOCFPGA_TERASIC_DE10_NANO
 	default "terasic" if TARGET_SOCFPGA_TERASIC_SOCKIT
@@ -221,6 +227,7 @@ config SYS_CONFIG_NAME
 	default "socfpga_cyclone5_socdk" if TARGET_SOCFPGA_CYCLONE5_SOCDK
 	default "socfpga_dbm_soc1" if TARGET_SOCFPGA_DEVBOARDS_DBM_SOC1
 	default "socfpga_de0_nano_soc" if TARGET_SOCFPGA_TERASIC_DE0_NANO
+	default "socfpga_de0_nano_soc" if TARGET_SOCFPGA_TERASIC_DE0_NANO_HDMI
 	default "socfpga_de1_soc" if TARGET_SOCFPGA_TERASIC_DE1_SOC
 	default "socfpga_de10_nano" if TARGET_SOCFPGA_TERASIC_DE10_NANO
 	default "socfpga_is1" if TARGET_SOCFPGA_IS1
